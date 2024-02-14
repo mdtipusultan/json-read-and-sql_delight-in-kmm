@@ -1,8 +1,8 @@
-package com.jetbrains.handson.json
+package com.jetbrains.handson.json.service
 
+import com.jetbrains.handson.json.DatabaseDriverFactory
 import com.jetbrains.handson.json.api.AccountBalance
 import com.jetbrains.handson.json.api.AccountTransaction
-import com.jetbrains.handson.json.service.AccountFactory
 
 class MockService(private val databaseDriverFactory: DatabaseDriverFactory) {
     fun loadAccountTransaction(transactions: List<AccountTransaction>) {

@@ -5,7 +5,7 @@ import android.content.Context
 import com.jetbrains.handson.json.DatabaseDriverFactory
 import com.jetbrains.handson.json.api.AccountBalance
 import com.jetbrains.handson.json.api.AccountTransaction
-import com.jetbrains.handson.json.MockService
+import com.jetbrains.handson.json.service.MockService
 
 import kotlinx.serialization.json.Json
 
