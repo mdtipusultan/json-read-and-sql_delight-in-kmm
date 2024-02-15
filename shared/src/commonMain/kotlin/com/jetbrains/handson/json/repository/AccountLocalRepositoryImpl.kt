@@ -1,5 +1,6 @@
 package com.jetbrains.handson.json.repository
 
+// Importing necessary classes from other packages or files
 import com.jetbrains.handson.json.CapitaDb
 import com.jetbrains.handson.json.DatabaseDriverFactory
 import com.jetbrains.handson.json.api.AccountBalance
@@ -8,15 +9,18 @@ import com.jetbrains.handson.json.api.AccountReceivable
 import com.jetbrains.handson.json.api.AccountRepository
 import com.jetbrains.handson.json.api.AccountTransaction
 
-
-internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFactory) : AccountRepository {
+// Internal implementation of the AccountRepository interface
+internal class AccountLocalRepositoryImpl(databaseDriverFactory: DatabaseDriverFactory) : AccountRepository {
+    // Initializing database using CapitaDb and the provided database driver
     private val database = CapitaDb(databaseDriverFactory.createDriver())
 
+    // Implementation of the getAccountBalance function
     override fun getAccountBalance(): List<AccountBalance> {
         return database.accountBalanceQueries.getAccountBalance()
             .executeAsList()
             .map { accountBalanceData ->
                 AccountBalance(
+                    // Mapping retrieved data to AccountBalance objects
                     accountCode = accountBalanceData?.accountCode!!,
                     accruedCharge = accountBalanceData?.accruedCharge!!,
                     assetValue = accountBalanceData?.assetValue!!,
@@ -38,11 +42,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
             }
     }
 
+    // Implementation of the getAccountInstrument function
     override fun getAccountInstrument(): List<AccountInstrument> {
         return database.accountInstrumentQueries.getAccountInstrumentData()
             .executeAsList()
             .map { accountInstrument ->
                 AccountInstrument(
+                    // Mapping retrieved data to AccountInstrument objects
                     instrumentIndex = accountInstrument?.instrumentIndex!!,
                     longName = accountInstrument?.long_name!!,
                     shortName = accountInstrument?.short_name!!,
@@ -62,11 +68,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
             }
     }
 
+    // Implementation of the getAccountReceivable function
     override fun getAccountReceivable(): List<AccountReceivable> {
         return database.accountReceivableQueries.getAccountReceivableData()
             .executeAsList()
             .map { accountReceivableData ->
                 AccountReceivable(
+                    // Mapping retrieved data to AccountReceivable objects
                     name = accountReceivableData?.name!!,
                     company1 = accountReceivableData?.company1!!,
                     company2 = accountReceivableData?.company2!!,
@@ -78,12 +86,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
             }
     }
 
+    // Implementation of the getAccountTransaction function
     override fun getAccountTransaction(): List<AccountTransaction> {
-
         return database.accountTransactionQueries.getAccountTransactionData()
             .executeAsList()
             .map { accountTransactionData ->
                 AccountTransaction(
+                    // Mapping retrieved data to AccountTransaction objects
                     transferType = accountTransactionData?.transferType!!,
                     totalAmount = accountTransactionData?.totalAmount!!,
                     description = accountTransactionData?.description!!,
@@ -94,12 +103,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
             }
     }
 
+    // Implementation of the createAccountTransaction function
     override fun createAccountTransaction(transactions: List<AccountTransaction>) {
-
         transactions.forEach { transaction ->
             val existingTransaction =
                 database.accountTransactionQueries.getAccountTransactionByUniqueId(transaction.transferType)
             if (existingTransaction.executeAsList().isEmpty()) {
+                // Inserting new account transaction data into the database
                 database.accountTransactionQueries.insertAccountTransactionData(
                     transferType = transaction.transferType,
                     totalAmount = transaction.totalAmount,
@@ -112,12 +122,12 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
         }
     }
 
+    // Implementation of the createAccountInstrument function
     override fun createAccountInstrument(instruments: List<AccountInstrument>) {
-
-
         instruments.forEach { instrument ->
             val existingInstrument = database.accountInstrumentQueries.getAccountInstrumentByUniqueId(instrument.shortName)
             if (existingInstrument.executeAsList().isEmpty()) {
+                // Inserting new account instrument data into the database
                 database.accountInstrumentQueries.insertAccountInstrumentData(
                     instrumentIndex = instrument.instrumentIndex,
                     long_name = instrument.longName,
@@ -139,12 +149,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
         }
     }
 
+    // Implementation of the createAccountBalance function
     override fun createAccountBalance(balances: List<AccountBalance>) {
-
         balances.forEach { balance ->
             val existingBalance =
                 database.accountBalanceQueries.getAccountBalanceByUniqueId(balance.accountCode)
             if (existingBalance.executeAsList().isEmpty()) {
+                // Inserting new account balance data into the database
                 database.accountBalanceQueries.insertAccountBalanceData(
                     accountCode = balance.accountCode,
                     accruedCharge = balance.accruedCharge,
@@ -168,13 +179,13 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory:DatabaseDriverFa
         }
     }
 
+    // Implementation of the createAccountReceivable function
     override fun createAccountReceivable(receivables: List<AccountReceivable>) {
-
-//        db.accountReceivableQueries.deleteAccountReceivableData()
         receivables.forEach { receivable ->
             val existingReceivable =
                 database.accountReceivableQueries.getAccountReceivableByUniqueName(receivable.name)
             if (existingReceivable.executeAsList().isEmpty()) {
+                // Inserting new account receivable data into the database
                 database.accountReceivableQueries.insertAccountReceivableData(
                     name = receivable.name,
                     company1 = receivable.company1,
