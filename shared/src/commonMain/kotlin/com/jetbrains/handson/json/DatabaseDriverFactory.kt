@@ -1,7 +1,11 @@
 package com.jetbrains.handson.json
 
+// Importing the SqlDriver class from the SqlDelight library
 import app.cash.sqldelight.db.SqlDriver
 
-expect class DatabaseDriverFactory{
+// Declaration of an expect class DatabaseDriverFactory
+expect class DatabaseDriverFactory {
+    // Abstract function to create a SqlDriver
     fun createDriver(): SqlDriver
 }
+
