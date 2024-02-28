@@ -39,6 +39,7 @@ class MockLoader {
         
         // Account Balance
         if let balanceData = loadJson(fileName: "accountbalance") {
+            
             do {
                 let balances = try JSONDecoder().decode([AccountBalance].self, from: balanceData)
                 service.loadAccountBalance(balances: balances)
