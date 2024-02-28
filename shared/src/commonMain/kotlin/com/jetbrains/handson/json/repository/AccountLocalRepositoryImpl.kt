@@ -153,28 +153,34 @@ internal class AccountLocalRepositoryImpl(databaseDriverFactory: DatabaseDriverF
     override fun createAccountBalance(balances: List<AccountBalance>) {
         balances.forEach { balance ->
             val existingBalance =
-                database.accountBalanceQueries.getAccountBalanceByUniqueId(balance.accountCode)
-            if (existingBalance.executeAsList().isEmpty()) {
-                // Inserting new account balance data into the database
-                database.accountBalanceQueries.insertAccountBalanceData(
-                    accountCode = balance.accountCode,
-                    accruedCharge = balance.accruedCharge,
-                    assetValue = balance.assetValue,
-                    buyingPower = balance.buyingPower,
-                    cashBalance = balance.cashBalance,
-                    costValue = balance.costValue,
-                    currentBalance = balance.currentBalance,
-                    deptEquityRatio = balance.deptEquityRatio,
-                    equity = balance.equity,
-                    equityDebtRatio = balance.equityDebtRatio,
-                    immatureBalance = balance.immatureBalance,
-                    loanRatio = balance.loanRatio,
-                    marginEquity = balance.marginEquity,
-                    marketValue = balance.marketValue,
-                    totalDeposit = balance.totalDeposit,
-                    totalWithdrawal = balance.totalWithdrawal,
-                    unclearCheque = balance.unclearCheque,
-                )
+                balance.accountCode?.let {
+                    database.accountBalanceQueries.getAccountBalanceByUniqueId(
+                        it
+                    )
+                }
+            if (existingBalance != null) {
+                if (existingBalance.executeAsList().isEmpty()) {
+                    // Inserting new account balance data into the database
+                    database.accountBalanceQueries.insertAccountBalanceData(
+                        accountCode = balance.accountCode,
+                        accruedCharge = balance.accruedCharge,
+                        assetValue = balance.assetValue,
+                        buyingPower = balance.buyingPower,
+                        cashBalance = balance.cashBalance,
+                        costValue = balance.costValue,
+                        currentBalance = balance.currentBalance,
+                        deptEquityRatio = balance.deptEquityRatio,
+                        equity = balance.equity,
+                        equityDebtRatio = balance.equityDebtRatio,
+                        immatureBalance = balance.immatureBalance,
+                        loanRatio = balance.loanRatio,
+                        marginEquity = balance.marginEquity,
+                        marketValue = balance.marketValue,
+                        totalDeposit = balance.totalDeposit,
+                        totalWithdrawal = balance.totalWithdrawal,
+                        unclearCheque = balance.unclearCheque,
+                    )
+                }
             }
         }
     }
