@@ -10,6 +10,7 @@ import com.jetbrains.handson.json.api.AccountTransaction
 class AccountServiceImpl(private val databaseDriverFactory: DatabaseDriverFactory) : AccountService {
     override fun getBalanceServices(): List<AccountBalance> {
         val repository = AccountFactory.getRepository(databaseDriverFactory);
+
         return repository.getAccountBalance()
     }
 
