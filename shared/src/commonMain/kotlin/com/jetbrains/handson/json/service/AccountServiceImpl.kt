@@ -12,9 +12,14 @@ import com.jetbrains.handson.json.api.AccountTransaction
 class AccountServiceImpl(private val databaseDriverFactory: DatabaseDriverFactory) : AccountService {
     // Function to get account balances
     override fun getBalanceServices(): List<AccountBalance> {
+<<<<<<< HEAD
+        val repository = AccountFactory.getRepository(databaseDriverFactory);
+
+=======
         // Retrieving the account repository from the factory
         val repository = AccountFactory.getRepository(databaseDriverFactory)
         // Returning the list of account balances from the repository
+>>>>>>> ee17242d235c4117494440d0ecfb5386b5ca593a
         return repository.getAccountBalance()
     }
 

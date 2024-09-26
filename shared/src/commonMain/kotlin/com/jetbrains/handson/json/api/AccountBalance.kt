@@ -1,7 +1,7 @@
 package com.jetbrains.handson.json.api
 import kotlinx.serialization.Serializable
 @Serializable
-class AccountBalance (
+data class AccountBalance (
     val accountCode: String?,
     val accruedCharge: Double?,
     val assetValue: Double?,
